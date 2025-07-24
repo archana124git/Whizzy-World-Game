@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Level 2 - Color Match</title>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <style>
+    body {
+      background: linear-gradient(to right, #ffe0b2, #ffccbc);
+      font-family: 'Comic Sans MS', sans-serif;
+      text-align: center;
+      padding-top: 50px;
+    }
+  </style>
+</head>
+<body>
+  <div id="gameArea"></div>
+  <script src="level2.js"></script>
+  <audio id="bgMusic" src="assets/background.mp3" loop autoplay></audio>
+
+<script>
+  const bgMusic = document.getElementById("bgMusic");
+
+  // Only play music if user enabled it
+  if (localStorage.getItem("music") === "playing") {
+    bgMusic.play().catch(e => console.warn("Autoplay blocked:", e));
+  }
+
+  // Optional: allow stopping music with a button
+  function stopMusic() {
+    bgMusic.pause();
+    localStorage.removeItem("music");
+  }
+</script>
+<button onclick="stopMusic()">🔇 </button>
+<!-- Level Progress Indicator -->
+<div class="level-indicator" style="text-align:center; font-size: 24px; margin-top: 20px; font-weight: bold; color: #ff66b2;">
+  🌟 Level 2 of 5 🌟
+</div>
+
+</body>
+</html>

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Welcome to WhizzyWorld</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Fredoka One', cursive;
+      background: radial-gradient(circle at top left, #ffd6e8, #a29bfe);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      overflow: hidden;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 3.5rem;
+      color: #fff;
+      text-shadow: 3px 3px #ff6b81;
+      animation: popUp 1s ease-out forwards;
+    }
+
+    .characters {
+      margin: 30px 0;
+      font-size: 80px;
+      display: flex;
+      gap: 30px;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    .tagline {
+      color: #fff;
+      background-color: rgba(255, 255, 255, 0.25);
+      padding: 15px 30px;
+      border-radius: 25px;
+      font-size: 1.5rem;
+      margin-bottom: 30px;
+      backdrop-filter: blur(5px);
+      animation: fadeIn 2s ease-in;
+    }
+
+    button {
+      font-size: 1.5rem;
+      padding: 15px 40px;
+      border: none;
+      border-radius: 50px;
+      background: linear-gradient(to right, #ff7675, #fab1a0);
+      color: white;
+      cursor: pointer;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+      transition: all 0.3s ease;
+      animation: bounce 1.5s infinite;
+    }
+
+    button:hover {
+      transform: scale(1.1);
+      background: linear-gradient(to right, #fd79a8, #ffeaa7);
+      color: #2d3436;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-15px); }
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes popUp {
+      from { transform: scale(0); }
+      to { transform: scale(1); }
+    }
+
+    .sparkle {
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      background: #fff;
+      border-radius: 50%;
+      animation: sparkleAnim 5s linear infinite;
+    }
+
+    @keyframes sparkleAnim {
+      0% {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-800px) scale(0.5);
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+<div style="text-align: center; margin-top: 30px;">
+  <img src="assets/mascot.png" alt="Mascot" width="80" style="animation: floaty 3s infinite;">
+  <p id="mascot-speech" style="font-size: 20px; color: #ff66b2;">🎤 Welcome to WhizzyWorld! Let's play and learn!</p>
+  <audio id="mascot-voice" autoplay>
+    <source src="assets/welcome.mp3" type="audio/mpeg">
+  </audio>
+</div>
+
+  <!-- 🎵 Background Music -->
+  <audio id="bgMusic" src="assets/background.mp3" loop></audio>
+
+  <h1>🎉 Welcome to WhizzyWorld! 🎉</h1>
+
+  <div class="characters">
+    🧚 🐵 🦄 🐸 🐼
+  </div>
+
+  <div class="tagline">A magical sensory adventure just for you!</div>
+
+  <button onclick="startGame()">🎮 Let’s Play</button>
+
+  <script>
+    const bgMusic = document.getElementById("bgMusic");
+
+    // Ensure audio plays when user clicks anywhere (browser autoplay policy)
+    document.addEventListener("click", function enableAudio() {
+      bgMusic.play().catch(e => console.warn("Autoplay prevented:", e));
+      document.removeEventListener("click", enableAudio);
+    });
+
+    function startGame() {
+      bgMusic.play();
+      window.location.href = "level1.html";
+    }
+
+    // Create animated sparkles
+    for (let i = 0; i < 50; i++) {
+      const sparkle = document.createElement('div');
+      sparkle.className = 'sparkle';
+      sparkle.style.left = `${Math.random() * 100}%`;
+      sparkle.style.top = `${Math.random() * 100}%`;
+      sparkle.style.animationDuration = `${3 + Math.random() * 3}s`;
+      document.body.appendChild(sparkle);
+    }
+  </script>
+
+</body>
+</html>

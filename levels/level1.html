@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Level 1 - Match the Letter</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(to right, #d9a7c7, #fffcdc);
+      font-family: 'Fredoka One', cursive;
+      text-align: center;
+    }
+
+    h1 {
+      color: #ff4081;
+      font-size: 3rem;
+      margin-top: 30px;
+      text-shadow: 2px 2px white;
+    }
+
+    .instructions {
+      font-size: 1.3rem;
+      color: #444;
+      background-color: #fff3cd;
+      border: 3px dashed #ff69b4;
+      display: inline-block;
+      padding: 12px 20px;
+      border-radius: 25px;
+      margin: 10px auto 20px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    #game-box {
+      width: 80%;
+      margin: 0 auto;
+      background: #ffffffcc;
+      border-radius: 20px;
+      padding: 20px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    }
+
+    .letter {
+      font-size: 80px;
+      margin: 20px 0;
+      color: #ff4081;
+      text-shadow: 2px 2px #fff;
+    }
+
+    .options {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .option {
+      font-size: 50px;
+      padding: 15px 25px;
+      background: #ffccf9;
+      border: 3px solid #ff69b4;
+      border-radius: 15px;
+      cursor: pointer;
+      transition: all 0.2s ease-in-out;
+    }
+
+    .option:hover {
+      transform: scale(1.2);
+      background: #ffc3a0;
+    }
+
+    .level-indicator {
+      text-align: center;
+      font-size: 24px;
+      margin-top: 20px;
+      font-weight: bold;
+      color: #ff66b2;
+    }
+
+    button {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      font-size: 20px;
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>🎯 Level 1: Match the Letter!</h1>
+  <div class="instructions">Tap the correct match for the letter shown below 👇</div>
+  <div id="game-box">
+    <div class="letter" id="target-letter">A</div>
+    <div class="options" id="options-container"></div>
+  </div>
+
+  <div class="level-indicator">🌟 Level 1 of 5 🌟</div>
+
+  <button onclick="stopMusic()">🔇</button>
+
+  <audio id="bgMusic" src="assets/background.mp3" loop autoplay></audio>
+  <audio id="voiceInstruction" autoplay>
+    <source src="assets/level1-instruction.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+
+  <script>
+    const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split('');
+    let correctLetter;
+
+    function getRandomLetter(exclude = []) {
+      let filtered = letters.filter(l => !exclude.includes(l));
+      return filtered[Math.floor(Math.random() * filtered.length)];
+    }
+
+    function generateOptions() {
+      correctLetter = getRandomLetter();
+      document.getElementById("target-letter").textContent = correctLetter;
+
+      // Pick two other wrong letters
+      let wrong1 = getRandomLetter([correctLetter]);
+      let wrong2 = getRandomLetter([correctLetter, wrong1]);
+
+      let options = [correctLetter, wrong1, wrong2];
+      options.sort(() => 0.5 - Math.random()); // Shuffle
+
+      let container = document.getElementById("options-container");
+      container.innerHTML = '';
+      options.forEach(letter => {
+        let div = document.createElement("div");
+        div.className = "option";
+        div.textContent = letter;
+        div.onclick = () => checkAnswer(div);
+        container.appendChild(div);
+      });
+    }
+
+    function checkAnswer(element) {
+      const selected = element.textContent;
+      if (selected === correctLetter) {
+        Swal.fire({
+          title: '🎉 Correct!',
+          text: 'Great job! Moving to next level!',
+          icon: 'success',
+          confirmButtonText: 'Next Level',
+        }).then(() => {
+          window.location.href = "level2.html";
+        });
+      } else {
+        Swal.fire({
+          title: '❌ Oops!',
+          text: 'That’s not the correct letter. Try again!',
+          icon: 'error',
+          confirmButtonText: 'Try Again',
+        });
+      }
+    }
+
+    function stopMusic() {
+      const bgMusic = document.getElementById("bgMusic");
+      bgMusic.pause();
+      localStorage.removeItem("music");
+    }
+
+    // Auto-play music if enabled
+    window.onload = () => {
+      if (localStorage.getItem("music") === "playing") {
+        document.getElementById("bgMusic").play().catch(e => console.warn("Autoplay blocked:", e));
+      }
+      generateOptions();
+    }
+  </script>
+</body>
+</html>

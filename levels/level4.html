@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Level 4 - Shadow Match (Twisted)</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <style>
+    body {
+      font-family: 'Fredoka One', cursive;
+      background: linear-gradient(to right, #89f7fe, #66a6ff);
+      text-align: center;
+      margin: 0;
+      padding: 20px;
+    }
+
+    h1 {
+      font-size: 2.8rem;
+      color: #444;
+      margin-bottom: 10px;
+      text-shadow: 2px 2px #fff;
+    }
+
+    .instructions {
+      font-size: 1.3rem;
+      margin-bottom: 30px;
+      background: #ffffffa6;
+      padding: 10px 20px;
+      display: inline-block;
+      border-radius: 20px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+
+    .emoji {
+      font-size: 120px;
+      margin-bottom: 20px;
+    }
+
+    .shadow-options {
+      display: flex;
+      justify-content: center;
+      gap: 25px;
+      flex-wrap: wrap;
+    }
+
+    .shadow {
+      width: 100px;
+      height: 100px;
+      font-size: 100px;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+
+    .shadow:hover {
+      transform: scale(1.2);
+    }
+
+    .flipped {
+      transform: scaleX(-1);
+    }
+
+    .rotated {
+      transform: rotate(180deg);
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🔍 Level 4: Shadow Match - Twisted!</h1>
+  <div class="instructions">Choose the correct shadow of the object shown below!</div>
+
+  <div class="emoji" id="main-emoji">🦄</div>
+
+  <div class="shadow-options" id="shadow-container"></div>
+
+  <audio id="bgMusic" src="assets/background.mp3" loop autoplay></audio>
+  <button onclick="stopMusic()">🔇 Stop Music</button>
+
+  <audio id="voiceInstruction" autoplay>
+    <source src="assets/level4-instruction.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+
+  <div class="level-indicator" style="text-align:center; font-size: 24px; margin-top: 20px; font-weight: bold; color: #ff66b2;">
+    🌟 Level 4 of 5 🌟
+  </div>
+
+  <script>
+    const emojis = ['🦄', '🐶', '🐱', '🐵', '🐸', '🐘', '🦁', '🐻', '🐼', '🐷'];
+    const mainEmoji = emojis[Math.floor(Math.random() * emojis.length)];
+    document.getElementById("main-emoji").textContent = mainEmoji;
+
+    const container = document.getElementById("shadow-container");
+    const correctIndex = Math.floor(Math.random() * 3);
+    const transforms = ['flipped', 'rotated', ''];
+
+    for (let i = 0; i < 3; i++) {
+      const div = document.createElement("div");
+      div.className = "shadow";
+
+      if (i === correctIndex) {
+        div.onclick = () => checkAnswer(true);
+        div.textContent = mainEmoji;
+      } else {
+        const styleClass = transforms[Math.floor(Math.random() * 2)]; // random wrong effect
+        div.classList.add(styleClass);
+        div.textContent = mainEmoji;
+        div.onclick = () => checkAnswer(false);
+      }
+
+      container.appendChild(div);
+    }
+
+    function checkAnswer(isCorrect) {
+      if (isCorrect) {
+        Swal.fire({
+          title: "✅ Great!",
+          text: "You chose the correct shadow!",
+          icon: "success",
+          confirmButtonText: "Next Level"
+        }).then(() => {
+          window.location.href = "level5.html";
+        });
+      } else {
+        Swal.fire({
+          title: "❌ Try Again",
+          text: "That wasn’t the right shadow.",
+          icon: "error",
+          confirmButtonText: "Retry"
+        });
+      }
+    }
+
+    const bgMusic = document.getElementById("bgMusic");
+    if (localStorage.getItem("music") === "playing") {
+      bgMusic.play().catch(e => console.warn("Autoplay blocked:", e));
+    }
+
+    function stopMusic() {
+      bgMusic.pause();
+      localStorage.removeItem("music");
+    }
+
+    window.onload = function () {
+      const audio = document.getElementById("voiceInstruction");
+      if (!sessionStorage.getItem("voicePlayed4")) {
+        audio.play();
+        sessionStorage.setItem("voicePlayed4", "true");
+      }
+    };
+  </script>
+</body>
+</html>
