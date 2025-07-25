@@ -2,7 +2,7 @@ whizzy world game
 
 #  Whizzy-World Game
 
-Whizzy-World is an accessibility-focused, multi-level educational game designed to support children with disabilities such as Dyslexia, Autism Spectrum Disorder (ASD), and motor or sensory difficulties. The game is visually rich, engaging, and built using HTML, CSS, and JavaScript.
+Whizzy-World is an accessibility-focused, multi-level educational simple  game designed to support children with disabilities such as Dyslexia, Autism Spectrum Disorder (ASD), and motor or sensory difficulties. The game is visually rich, engaging, and built using HTML, CSS, and JavaScript.
 
 ## Project Purpose
 
